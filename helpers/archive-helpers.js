@@ -25,17 +25,81 @@ exports.initialize = function(pathsObj){
 // The following function names are provided to you to suggest how you might
 // modularize your code. Keep it clean!
 
-exports.readListOfUrls = function(){
+exports.readListOfUrls = function(callBack){
+
+fs.readFile(exports.paths.list, 'utf-8', function(err, sites) {
+  sites =sites.toString().split("\n");
+  if (callBack) {
+    callBack(sites);
+  }
+});
+
+
+  // var results = [];
+  // var contents = fs.readFile(exports.paths.list, 'utf8', function(err, data){
+
+  //   if (err) {
+
+  //   } else {
+  //     results = data.split("\n");
+  //     callBack(results);
+  //   }
+  // });
 };
 
-exports.isUrlInList = function(){
+exports.isUrlInList = function(url, callBack){
+  exports.readListOfUrls(function(sites) {
+    var found = _.any(sites, function(site, i) {
+      return site.match(url);
+    });
+    callBack(found);
+  });
+
+
+
+  // var result = false;
+  // this.readListOfUrls(function(urls){
+  //   // var urls = data.split("\n");
+  //   if (urls.indexOf(url) !== -1){
+  //     result = true;
+  //   }
+
+  //   callBack(result);
+  // });
+
+  // var result = false;
+  // var contents = fs.readFile(exports.paths.list, 'utf8', function(err, data){
+
+  //   var result = false;
+
+  //   if (err) {
+
+  //   } else {
+  //     var urls = data.split("\n");
+  //     if (urls.indexOf(url) !== -1){
+  //       result = true;
+  //     }
+  //   }
+  //   console.log(result);
+  //   callBack(result);
+
+  // });
+
 };
 
-exports.addUrlToList = function(){
+exports.addUrlToList = function(siteName){
+  // fs.openSync("../archives/sites.txt");
+  fs.appendFileSync(exports.paths.list, siteName);
 };
 
-exports.isURLArchived = function(){
+exports.isURLArchived = function(siteName){
+  if (fs.existsSync(exports.paths.archivedSites + '/' + siteName)) {
+    return true;
+  };
+
+  return false;
 };
 
 exports.downloadUrls = function(){
+
 };
