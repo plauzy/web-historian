@@ -27,12 +27,12 @@ exports.initialize = function(pathsObj){
 
 exports.readListOfUrls = function(callBack){
 
-fs.readFile(exports.paths.list, 'utf-8', function(err, sites) {
-  sites =sites.toString().split("\n");
-  if (callBack) {
-    callBack(sites);
-  }
-});
+  fs.readFile(exports.paths.list, 'utf-8', function(err, sites) {
+    sites =sites.toString().split("\n");
+    if (callBack) {
+      callBack(sites);
+    }
+  });
 
 
   // var results = [];
@@ -87,9 +87,11 @@ exports.isUrlInList = function(url, callBack){
 
 };
 
-exports.addUrlToList = function(siteName){
-  // fs.openSync("../archives/sites.txt");
-  fs.appendFileSync(exports.paths.list, siteName);
+exports.addUrlToList = function(url, callback){
+  fs.appendFile(exports.paths.list, url+'\n', function(err, file){
+    callback();
+  });
+  // fs.appendFileSync(exports.paths.list, siteName);
 };
 
 exports.isURLArchived = function(siteName){
